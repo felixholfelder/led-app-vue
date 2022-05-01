@@ -1,7 +1,7 @@
 import { NativeScriptConfig } from '@nativescript/core';
 
 export default {
-  id: 'org.nativescript.ledapp',
+  id: 'cloud.holfelder.ledapp',
   appPath: 'app',
   appResourcesPath: 'App_Resources',
   android: {
