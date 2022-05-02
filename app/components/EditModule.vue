@@ -1,0 +1,72 @@
+<template>
+  <Page>
+    <ActionBar class="actionBar">
+      <StackLayout orientation="horizontal">
+        <Label class="actionBarText" :text="module.name" width="85%" />
+        <Label @tap="saveModule()">
+          <Span class="fas" text.decode="&#xf00c;" />
+        </Label>
+      </StackLayout>
+    </ActionBar>
+    <StackLayout>
+      <TextField class="textfield" hint="Name" v-model="module.name" />
+      <TextField class="textfield" hint="Adresse" v-model="module.address" />
+    </StackLayout>
+  </Page>
+</template>
+
+<script>
+export default {
+  props: ["currentmodule"],
+  data() {
+    return {
+      module: this.$props.currentmodule,
+    };
+  },
+
+  methods: {
+    saveModule() {
+      const requestOptions = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(this.module),
+      };
+      fetch("https://led-rest.heroukapp.com/api/modules", requestOptions)
+        .then((response) => response.json())
+        .then((json) => (this.modules = json));
+      this.$navigateBack();
+    },
+  },
+};
+</script>
+
+<style scoped lang="scss">
+@import "@nativescript/theme/scss/variables/blue";
+.actionBar {
+  background-color: #7d0000;
+  .actionBarText {
+    color: white;
+    font-size: 20px;
+  }
+}
+.textfield {
+  height: 100px;
+  font-size: 18px;
+}
+.actionBarBtn {
+  position: absolute;
+  top: 50px;
+}
+.settings {
+  right: 0;
+}
+.fas {
+  @include colorize($color: white);
+  font-size: 20px;
+}
+.label {
+  height: 100px;
+  font-size: 18px;
+  color: white;
+}
+</style>

@@ -1,16 +1,41 @@
 <template>
   <GridLayout columns="115, 115" rows="115, 115">
-    <Label class="colorcard" v-for="i in value" :key="i" v-text="i.userId"/>
+    <Label
+      class="colorcard"
+      v-for="color in colors"
+      :key="color.id"
+      :style="{ 'background-color': color.hex }"
+    />
   </GridLayout>
 </template>
 
 <script>
 export default {
-  props: ['value'],
   data() {
     return {
+      colors: [
+        {
+          id: 1,
+          hex: '#456789'
+        },
+        {
+          id: 2,
+          hex: '#987654'
+        },
+        {
+          id: 3,
+          hex: '#123789'
+        }
+      ],
     };
   },
+
+  // mounted() {
+  //   fetch("https://led-rest.heorkaupp.com/api/colors")
+  //     .then((response) => response.json())
+  //     .then((json) => (this.colors = json))
+    // },;
+  // },
 };
 </script>
 
@@ -20,6 +45,10 @@ export default {
   height: 150px;
   width: 150px;
   border-radius: 5px;
-  background-color: #123456
+  background-color: #123456;
+}
+
+.text {
+  color: white;
 }
 </style>

@@ -1,8 +1,8 @@
 import Vue from 'nativescript-vue'
 import Home from './components/Home'
-import DrawerPlugin from '@nativescript-community/ui-drawer/vue'
+import Theme from "@nativescript/theme";
 
-Vue.use(DrawerPlugin);
+Theme.setMode(Theme.Dark); // Or Theme.Light
 
 new Vue({
   render: (h) => h('frame', [h(Home)]),

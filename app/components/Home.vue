@@ -1,38 +1,20 @@
 <template>
-  <Page class="mainContainer">
+  <Page>
     <ActionBar class="actionBar">
-      <Label class="actionBarText" text="Led-App" />
+      <Label class="actionBarText" text="Led-App" @tap="goToModule" />
     </ActionBar>
-
-    <Drawer ref="drawer">
-      <GridLayout
-        ~leftDrawer
-        class="drawer"
-        width="300"
-        backgroundColor="#363636"
-        rows="auto, *"
-      >
-        <StackLayout row="0">
-          <Label v-for="i in 3" :key="i" :text="i" />
-        </StackLayout>
-      </GridLayout>
-
-      <StackLayout ~mainContent>
-        
-      </StackLayout>
-    </Drawer>
+    <ColorCard />
   </Page>
 </template>
 <script>
-import ColorCard from "./ColorCard.vue";
+import ColorCard from "./ColorCard";
+import Module from "./Module";
 export default {
   components: {
     ColorCard,
   },
   data() {
-    return {
-      colors: [],
-    };
+    return {};
   },
 
   methods: {
@@ -42,30 +24,23 @@ export default {
     onCloseDrawer() {
       this.$refs["drawer"].close("left");
     },
-  },
-
-  mounted() {
-    fetch("https://jsonplaceholder.typicode.com/todos/1")
-      .then((response) => response.json())
-      .then((json) => (this.colors = json));
+    goToModule() {
+      this.$navigateTo(Module);
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
 @import "@nativescript/theme/scss/variables/blue";
-.mainContainer {
-  background-color: #222222;
-}
 .actionBar {
   background-color: #7d0000;
   .actionBarText {
     color: white;
   }
 }
-.info {
-  font-size: 20;
-  horizontal-align: center;
-  vertical-align: center;
+
+.fas {
+  @include colorize($color: accent);
 }
 </style>
