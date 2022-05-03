@@ -16,26 +16,25 @@ export default {
       colors: [
         {
           id: 1,
-          hex: '#456789'
+          hex: "#456789",
         },
         {
           id: 2,
-          hex: '#987654'
+          hex: "#987654",
         },
         {
           id: 3,
-          hex: '#123789'
-        }
+          hex: "#123789",
+        },
       ],
     };
   },
 
-  // mounted() {
-  //   fetch("https://led-rest.heorkaupp.com/api/colors")
-  //     .then((response) => response.json())
-  //     .then((json) => (this.colors = json))
-    // },;
-  // },
+  mounted() {
+    fetch(global.LED_REST_URL + "/colors")
+      .then((response) => response.json())
+      .then((json) => (this.colors = json));
+  },
 };
 </script>
 

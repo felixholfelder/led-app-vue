@@ -13,7 +13,15 @@
     </ActionBar>
     <ScrollView class="scrollview">
       <StackLayout class="layout">
-        <ListView for="(module, i) in modules" height="500">
+        <Label
+          class="noModules"
+          v-if="modules.length == null"
+          text="Keine aktiven Module vorhanden!"
+        />
+        <StackLayout class="loadingBar" v-if="loading">
+          <LoadingBar :loading="loading" />
+        </StackLayout>
+        <ListView v-if="!loading" for="(module, i) in modules" height="500">
           <v-template>
             <StackLayout orientation="horizontal">
               <Label width="85%" @tap="setModule(module)">
@@ -32,114 +40,31 @@
 
 <script>
 import EditModule from "./EditModule";
+import AddModule from "./AddModule";
+import LoadingBar from "./LoadingBar";
+
 export default {
+  components: {
+    LoadingBar
+  },
   data() {
     return {
-      modules: [
-        {
-          id: 1,
-          name: "Erstes Modul",
-          address: "eins.local",
-          status: 1,
-        },
-        {
-          id: 2,
-          name: "Zweites Modul",
-          address: "zwei.local",
-          status: 1,
-        },
-        {
-          id: 3,
-          name: "Drittes Modul",
-          address: "drei.local",
-          status: 1,
-        },
-        {
-          id: 4,
-          name: "Drittes Modul",
-          address: "drei.local",
-          status: 1,
-        },
-        {
-          id: 5,
-          name: "Drittes Modul",
-          address: "drei.local",
-          status: 1,
-        },
-        {
-          id: 6,
-          name: "Drittes Modul",
-          address: "drei.local",
-          status: 1,
-        },
-        {
-          id: 7,
-          name: "Drittes Modul",
-          address: "drei.local",
-          status: 1,
-        },
-        {
-          id: 8,
-          name: "Drittes Modul",
-          address: "drei.local",
-          status: 1,
-        },
-        {
-          id: 9,
-          name: "Drittes Modul",
-          address: "drei.local",
-          status: 1,
-        },
-        {
-          id: 10,
-          name: "Drittes Modul",
-          address: "drei.local",
-          status: 1,
-        },
-        {
-          id: 11,
-          name: "11tes Modul",
-          address: "drei.local",
-          status: 1,
-        },
-        {
-          id: 12,
-          name: "Drittes Modul",
-          address: "drei.local",
-          status: 1,
-        },
-        {
-          id: 13,
-          name: "13 Modul",
-          address: "drei.local",
-          status: 1,
-        },
-        {
-          id: 14,
-          name: "Drittes Modul",
-          address: "drei.local",
-          status: 1,
-        },
-        {
-          id: 15,
-          name: "15. Modul",
-          address: "drei.local",
-          status: 1,
-        },
-      ],
+      modules: [],
+      loading: false,
     };
   },
 
-  // mounted() {
-  //   getModules()
-  // },
+  mounted() {
+    this.getModules();
+  },
 
   methods: {
-    addModule() {
-      console.log("ADD MODULE");
-    },
     setModule(module) {
       console.log(module.name);
+    },
+
+    addModule() {
+      this.$navigateTo(AddModule)
     },
 
     openSettings(module) {
@@ -148,13 +73,24 @@ export default {
           currentmodule: module,
         },
       });
-      this.getModules()
+      this.getModules();
     },
 
     getModules() {
-      fetch("https://led-rest.heroukapp.com/api/modules")
+      this.loading = true;
+      fetch(`${process.env.LED_REST_URL}/modules`, {
+        method: "GET",
+        headers: {
+          Authorization: `Basic ${process.env.LED_REST_BASE}`,
+        },
+      })
         .then((response) => response.json())
-        .then((json) => (this.modules = json));
+        .then((json) => (this.modules = json))
+        .then(() => (this.loading = false))
+        .catch((error) => {
+          console.log(error);
+          this.loading = false;
+        });
     },
   },
 };
@@ -168,6 +104,14 @@ export default {
     color: white;
     font-size: 20px;
   }
+}
+.loadingBar {
+  height: 100%;
+  width: 100%;
+  top: 50%;
+}
+.noModules {
+  font-size: 15px;
 }
 .actionBarBtn {
   position: absolute;

@@ -1,7 +1,7 @@
 <template>
   <Page>
     <ActionBar class="actionBar">
-      <Label class="actionBarText" text="Led-App" @tap="goToModule" />
+      <Label class="actionBarText" text="Led-App" width="75%" @tap="goToModule" />
     </ActionBar>
     <ColorCard />
   </Page>
@@ -9,6 +9,7 @@
 <script>
 import ColorCard from "./ColorCard";
 import Module from "./Module";
+
 export default {
   components: {
     ColorCard,
@@ -18,12 +19,6 @@ export default {
   },
 
   methods: {
-    onOpenDrawer() {
-      this.$refs["drawer"].open("left");
-    },
-    onCloseDrawer() {
-      this.$refs["drawer"].close("left");
-    },
     goToModule() {
       this.$navigateTo(Module);
     },
