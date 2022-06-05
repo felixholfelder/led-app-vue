@@ -11,6 +11,7 @@
     <StackLayout>
       <TextField class="textfield" hint="Name" v-model="module.name" />
       <TextField class="textfield" hint="Adresse" v-model="module.address" />
+      <TextField class="textfield" hint="MAC-Adresse" v-model="module.mac" />
     </StackLayout>
   </Page>
 </template>
@@ -21,7 +22,8 @@ export default {
     return {
       module: {
           name: '',
-          address: ''
+          address: '',
+          mac: ''
       },
     };
   },

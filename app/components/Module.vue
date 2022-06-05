@@ -60,7 +60,8 @@ export default {
 
   methods: {
     setModule(module) {
-      console.log(module.name);
+      process.env.MODULE = module
+      this.$navigateBack()
     },
 
     addModule() {
@@ -112,6 +113,9 @@ export default {
 }
 .noModules {
   font-size: 15px;
+  height: 100%;
+  width: 100%;
+  top: 50%;
 }
 .actionBarBtn {
   position: absolute;
