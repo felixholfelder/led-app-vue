@@ -9,9 +9,12 @@
       </StackLayout>
     </ActionBar>
     <StackLayout>
-      <TextField class="textfield" hint="Name" v-model="module.name" />
-      <TextField class="textfield" hint="Adresse" v-model="module.address" />
-      <TextField class="textfield" hint="MAC-Adresse" v-model="module.mac" />
+      <Label class="text" text="Name"/>
+      <TextField class="textfield" v-model="module.name" />
+      <Label class="text" text="Adresse"/>
+      <TextField class="textfield" v-model="module.address" />
+      <Label class="text" text="MAC-Adresse"/>
+      <TextField class="textfield" v-model="module.mac" />
     </StackLayout>
   </Page>
 </template>
@@ -75,5 +78,12 @@ export default {
   height: 100px;
   font-size: 18px;
   color: white;
+}
+
+.text {
+  margin-left: 25px;
+  margin-top: 20px;
+  bottom: 0;
+  font-size: 15px;
 }
 </style>
