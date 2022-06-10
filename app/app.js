@@ -9,8 +9,11 @@ Vue.config.silent = false
 process.env.LED_REST_URL = 'https://led-rest.holfelder.cloud/api'
 process.env.LED_REST_USER = 'LED-REST'
 process.env.LED_REST_PASS = 'hidh98jlhxl'
-process.env.MODULE = {name: 'Led-App'}
 process.env.LED_REST_BASE = base64.encode(`${process.env.LED_REST_USER}:${process.env.LED_REST_PASS}`)
+process.env.MODULE = {name: 'Led-App'}
+process.env.IS_MODE = false;
+process.env.CURRENT_MODE = null;
+process.env.CURRENT_COLOR = null;
 
 new Vue({
   render: (h) => h('frame', [h(Home)]),

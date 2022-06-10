@@ -16,7 +16,7 @@
         <Label
           class="noModules"
           v-if="modules.length == null"
-          text="Keine aktiven Module vorhanden!"
+          text="Keine Module vorhanden!"
         />
         <StackLayout class="loadingBar" v-if="loading">
           <LoadingBar :loading="loading" />

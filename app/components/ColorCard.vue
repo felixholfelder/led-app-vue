@@ -18,17 +18,41 @@ export default {
   props: ["colors"],
   methods: {
     setColor(color) {
-      fetch(`http://${process.env.MODULE.address}/api/color`, {
-        method: "POST",
-        body: JSON.stringify(this.hextoRGB(color.hex)),
-      })
-        .then((response) => response.json())
-        .then((json) => (this.colors = json))
-        .then(() => (this.loading = false))
-        .catch((error) => {
-          console.log(error);
-          this.loading = false;
-        });
+      this.loading = true;
+      console.log(color.hex)
+      console.log(process.env.CURRENT_COLOR)
+      console.log(process.env.IS_MODE)
+      if (process.env.IS_MODE && process.env.CURRENT_COLOR != color.hex) {
+        fetch(`http://${process.env.MODULE.address}/api/mode`, {
+          method: "POST",
+          body: JSON.stringify({
+            mode: process.env.CURRENT_MODE,
+            ...this.hextoRGB(color.hex),
+          }),
+        })
+          .then((response) => response.json())
+          .then((json) => (this.colors = json))
+          .then(() => (this.loading = false))
+          .catch((error) => {
+            console.log(error);
+            this.loading = false;
+          });
+        process.env.IS_MODE = true;
+      } else {
+        fetch(`http://${process.env.MODULE.address}/api/color`, {
+          method: "POST",
+          body: JSON.stringify(this.hextoRGB(color.hex)),
+        })
+          .then((response) => response.json())
+          .then((json) => (this.colors = json))
+          .then(() => (this.loading = false))
+          .catch((error) => {
+            console.log(error);
+            this.loading = false;
+          });
+        process.env.IS_MODE = false;
+      }
+      process.env.CURRENT_COLOR = color.hex;
     },
     hextoRGB(hex) {
       var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);

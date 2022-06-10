@@ -8,6 +8,9 @@
           width="75%"
           @tap="goToModule"
         />
+        <Label @tap="goToModes()">
+          <Span class="fas" text.decode="&#xf0eb;" />
+        </Label>
         <Label @tap="getColors()">
           <Span class="fas" text.decode="&#xf2f1;" />
         </Label>
@@ -21,29 +24,40 @@
 </template>
 <script>
 import ColorCard from "./ColorCard";
+import ColorMode from "./ColorMode";
 import Module from "./Module";
 import LoadingBar from "./LoadingBar";
 
 export default {
   components: {
     ColorCard,
+    ColorMode,
     LoadingBar,
   },
   data() {
     return {
       colors: [],
+      modes: [],
       loading: false,
-      modulename: process.env.MODULE.name
+      modulename: process.env.MODULE.name,
     };
   },
 
   mounted() {
     this.getColors();
+    this.getModes();
   },
 
   methods: {
     goToModule() {
       this.$navigateTo(Module);
+    },
+    goToModes() {
+      this.$navigateTo(ColorMode, {
+        props: {
+          modes: this.modes
+        },
+      });
     },
     getColors() {
       this.loading = true;
@@ -55,6 +69,23 @@ export default {
       })
         .then((response) => response.json())
         .then((json) => (this.colors = json))
+        .then(() => (this.loading = false))
+        .catch((error) => {
+          console.log(error);
+          this.loading = false;
+        });
+    },
+
+    getModes() {
+      this.loading = true;
+      fetch(`${process.env.LED_REST_URL}/modes`, {
+        method: "GET",
+        headers: {
+          Authorization: `Basic ${process.env.LED_REST_BASE}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((json) => (this.modes = json))
         .then(() => (this.loading = false))
         .catch((error) => {
           console.log(error);
@@ -78,16 +109,5 @@ export default {
 .fas {
   @include colorize($color: white);
   font-size: 20px;
-}
-
-.colorcard {
-  height: 150px;
-  width: 150px;
-  border-radius: 5px;
-  background-color: #7d0000;
-}
-
-.text {
-  color: white;
 }
 </style>
